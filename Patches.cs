@@ -5,6 +5,10 @@ namespace SlicedPassengerCars
 {
     public static class Patches
     {
+        private static int patchedMask = 0;
+        public static bool IsPatched(TrainCarType type) => (patchedMask & (1 << (int)type)) > 0;
+        public static void SetPatched(TrainCarType type) => patchedMask |= 1 << (int)type;
+
         static bool IsPassengerCar(TrainCar car)
         {
             switch (car.carType)
@@ -26,12 +30,9 @@ namespace SlicedPassengerCars
                 if (__result == null)
                     return;
                 var car = __result.GetComponent<TrainCar>();
-                if (IsPassengerCar(car) && __result.Find("interior")?.GetComponent<MeshFilter>()?.sharedMesh?.name?.Contains("LOD") != true)
+                if (IsPassengerCar(car) && !IsPatched(car.carType))
                 {
-                    /*PrefabModder.Modify(
-                        __result,
-                        meshReplacements: PassengerCarModifications.MeshReplacements,
-                        relativeAdjustment: PassengerCarModifications.ChildrenTranslationAroundParent);*/
+                    SetPatched(car.carType);
                     PrefabModder.Modify(
                         __result,
                         meshReplacements: PassengerCarModifications.MeshReplacements,

@@ -27,30 +27,11 @@ namespace SlicedPassengerCars
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
 
-            //WorldStreamingInit.LoadingFinished += OnWorldLoadingFinished;
-
             return true;
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry) { settings.Draw(modEntry); }
         static void OnSaveGUI(UnityModManager.ModEntry modEntry) { settings.Save(modEntry); }
-
-        static void OnWorldLoadingFinished()
-        {
-            var prefabs = new GameObject[] {
-                CarTypes.GetCarPrefab(TrainCarType.PassengerBlue),
-                CarTypes.GetCarPrefab(TrainCarType.PassengerGreen),
-                CarTypes.GetCarPrefab(TrainCarType.PassengerRed),
-            };
-
-            foreach (var prefab in prefabs)
-            {
-                PrefabModder.Modify(
-                    prefab,
-                    meshReplacements: PassengerCarModifications.MeshReplacements,
-                    relativeAdjustment: PassengerCarModifications.ChildrenTranslationAroundParent);
-            }
-        }
 
         public static void Log(object message)
         {

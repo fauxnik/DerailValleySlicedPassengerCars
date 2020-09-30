@@ -42,46 +42,15 @@ namespace SlicedPassengerCars
         public static List<string> Modify(
             GameObject prefab,
             List<MeshReplacement> meshReplacements = null,
-            List<Transformation> transformations = null,
-            Vector3? relativeAdjustment = null)
+            List<Transformation> transformations = null)
         {
             Main.Log($"Modifying prefab: {prefab}");
             var missing = new List<string>();
 
             missing.AddRange(meshReplacements?.Where(mr => !ReplaceMesh(prefab, mr))?.Select(mr => mr.name) ?? new string[0]);
             missing.AddRange(transformations?.Where(t => !TransformChild(prefab, t))?.Select(t => t.name) ?? new string[0]);
-            if (relativeAdjustment != null) { AdjustChildren(prefab, relativeAdjustment.Value); }
 
             return missing;
-        }
-
-        public static void AdjustChildren(GameObject prefab, Vector3 ra)
-        {
-            // DFS?
-            var stack = new List<Transform>();
-            stack.AddRange(prefab.transform.OfType<Transform>());
-            while (stack.Count > 0)
-            {
-                var transform = stack[stack.Count - 1];
-                stack.RemoveAt(stack.Count - 1);
-                if (transform.localPosition.sqrMagnitude < 0.0005f)
-                {
-                    Main.Log($"Treating {transform.GetPath()} as parent (sqrMagnitude = {transform.localPosition.sqrMagnitude})");
-                    stack.AddRange(transform.OfType<Transform>());
-                }
-                else
-                {
-                    //Main.Log($"Adjusting transform {transform.GetPath()} (sqrMagnitude = {transform.localPosition.sqrMagnitude})");
-                    var lp = transform.localPosition;
-                    var av = new Vector3(
-                        Mathf.Sign(lp.x) * ra.x,
-                        Mathf.Sign(lp.y) * ra.y,
-                        Mathf.Sign(lp.z) * ra.z);
-                    var nlp = lp + av;
-                    Main.Log($"Adjusting transform {transform.GetPath()} ({lp} >>{av}>> {nlp})");
-                    transform.localPosition = nlp;
-                }
-            }
         }
 
         private static bool ReplaceMesh(GameObject prefab, MeshReplacement meshReplacement)
@@ -110,7 +79,6 @@ namespace SlicedPassengerCars
                 {
                     if (transformation.translate != null)
                     {
-                        //replacee.transform.localPosition += transformation.translate;
                         var lp = replacee.transform.localPosition;
                         var av = new Vector3(
                             Mathf.Sign(lp.x) * transformation.translate.x,
@@ -120,6 +88,8 @@ namespace SlicedPassengerCars
                         Main.Log($"Adjusting transform {replacee.transform.GetPath()} ({lp} >>{av}>> {nlp})");
                         replacee.transform.localPosition = nlp;
                     }
+                    if (transformation.rotate != null) { Main.LogError("Unimplemented: MirroredTransformation.rotate handling"); }
+                    if (transformation.scale != null) { Main.LogError("Unimplemented: MirroredTransformation.scale handling"); }
                 }
                 else
                 {
