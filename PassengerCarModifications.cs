@@ -7,7 +7,8 @@ namespace SlicedPassengerCars
     public static class PassengerCarModifications
     {
         public static List<PrefabModder.MeshReplacement> MeshReplacements { get; private set; }
-        public static Vector3 ChildrenTranslationAroundParent { get => new Vector3(0, 0, -0.298f); }
+        public static List<PrefabModder.Transformation> Transformations { get; private set; }
+        public static Vector3 ChildrenTranslationAroundParent { get => new Vector3(0, 0, -2.98f); }
 
         private static string[] meshNames = new string[]
         {

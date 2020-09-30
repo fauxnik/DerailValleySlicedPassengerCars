@@ -59,19 +59,22 @@ namespace SlicedPassengerCars
             {
                 var transform = stack[stack.Count - 1];
                 stack.RemoveAt(stack.Count - 1);
-                if (transform.localPosition == Vector3.zero)
+                if (transform.localPosition.sqrMagnitude < 0.0005f)
                 {
                     Main.Log($"Treating {transform.GetPath()} as parent (sqrMagnitude = {transform.localPosition.sqrMagnitude})");
                     stack.AddRange(transform.OfType<Transform>());
                 }
                 else
                 {
-                    Main.Log($"Adjusting transform {transform.GetPath()} (sqrMagnitude = {transform.localPosition.sqrMagnitude})");
+                    //Main.Log($"Adjusting transform {transform.GetPath()} (sqrMagnitude = {transform.localPosition.sqrMagnitude})");
                     var lp = transform.localPosition;
-                    transform.localPosition += new Vector3(
+                    var av = new Vector3(
                         Mathf.Sign(lp.x) * ra.x,
                         Mathf.Sign(lp.y) * ra.y,
                         Mathf.Sign(lp.z) * ra.z);
+                    var nlp = lp + av;
+                    Main.Log($"Adjusting transform {transform.GetPath()} ({lp} >>{av}>> {nlp})");
+                    transform.localPosition = nlp;
                 }
             }
         }

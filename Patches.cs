@@ -26,7 +26,7 @@ namespace SlicedPassengerCars
                 if (__result == null)
                     return;
                 var car = __result.GetComponent<TrainCar>();
-                if (IsPassengerCar(car))
+                if (IsPassengerCar(car) && __result.Find("interior")?.GetComponent<MeshFilter>()?.sharedMesh?.name?.Contains("LOD") != true)
                 {
                     PrefabModder.Modify(
                         __result,
