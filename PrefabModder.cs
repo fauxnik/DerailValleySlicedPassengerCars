@@ -34,6 +34,11 @@ namespace SlicedPassengerCars
             }
         }
 
+        public class MirroredTransformation : Transformation
+        {
+            public MirroredTransformation(string name, Vector3? translate = null, Quaternion? rotate = null, Vector3? scale = null) : base(name, translate, rotate, scale) { }
+        }
+
         public static List<string> Modify(
             GameObject prefab,
             List<MeshReplacement> meshReplacements = null,
@@ -97,9 +102,40 @@ namespace SlicedPassengerCars
 
         private static bool TransformChild(GameObject prefab, Transformation transformation)
         {
-            // TODO
-            Main.LogError("Unimplemented method: PrefabModder.TransformChild");
-            return false;
+            var replacees = prefab.FindAll(transformation.name);
+
+            foreach (var replacee in replacees)
+            {
+                if (transformation.GetType() == typeof(MirroredTransformation))
+                {
+                    if (transformation.translate != null)
+                    {
+                        //replacee.transform.localPosition += transformation.translate;
+                        var lp = replacee.transform.localPosition;
+                        var av = new Vector3(
+                            Mathf.Sign(lp.x) * transformation.translate.x,
+                            Mathf.Sign(lp.y) * transformation.translate.y,
+                            Mathf.Sign(lp.z) * transformation.translate.z);
+                        var nlp = lp + av;
+                        Main.Log($"Adjusting transform {replacee.transform.GetPath()} ({lp} >>{av}>> {nlp})");
+                        replacee.transform.localPosition = nlp;
+                    }
+                }
+                else
+                {
+                    if (transformation.translate != null) { replacee.transform.localPosition += transformation.translate; }
+                    if (transformation.rotate != null) { replacee.transform.localRotation *= transformation.rotate; }
+                    if (transformation.scale != null)
+                    {
+                        replacee.transform.localScale = new Vector3(
+                            replacee.transform.localScale.x * transformation.scale.x,
+                            replacee.transform.localScale.y * transformation.scale.y,
+                            replacee.transform.localScale.z * transformation.scale.z);
+                    }
+                }
+            }
+
+            return replacees.Count > 0;
         }
     }
 }

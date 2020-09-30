@@ -28,10 +28,14 @@ namespace SlicedPassengerCars
                 var car = __result.GetComponent<TrainCar>();
                 if (IsPassengerCar(car) && __result.Find("interior")?.GetComponent<MeshFilter>()?.sharedMesh?.name?.Contains("LOD") != true)
                 {
+                    /*PrefabModder.Modify(
+                        __result,
+                        meshReplacements: PassengerCarModifications.MeshReplacements,
+                        relativeAdjustment: PassengerCarModifications.ChildrenTranslationAroundParent);*/
                     PrefabModder.Modify(
                         __result,
                         meshReplacements: PassengerCarModifications.MeshReplacements,
-                        relativeAdjustment: PassengerCarModifications.ChildrenTranslationAroundParent);
+                        transformations: PassengerCarModifications.Transformations);
                 }
             }
         }
