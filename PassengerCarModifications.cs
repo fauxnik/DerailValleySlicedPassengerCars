@@ -52,7 +52,6 @@ namespace SlicedPassengerCars
             {
                 var go = bundle.LoadAsset<GameObject>($"Assets/Models/SlicedPax/{name}.fbx");
                 var mf = go.GetComponent<MeshFilter>();
-                var smr = go.GetComponent<SkinnedMeshRenderer>();
                 var sm = mf.sharedMesh;
                 MeshReplacements.Add(new PrefabModder.MeshReplacement(name, sm));
             }
