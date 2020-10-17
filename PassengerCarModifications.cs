@@ -34,7 +34,7 @@ namespace SlicedPassengerCars
             "car_passenger_LOD3",
             "exterior",
             "front doors",
-            //"interior",
+            "interior",
             "side doors",
             "windows",
             "windows_int",
@@ -55,14 +55,6 @@ namespace SlicedPassengerCars
                 var sm = mf.sharedMesh;
                 MeshReplacements.Add(new PrefabModder.MeshReplacement(name, sm));
             }
-
-            // TODO: wtf is wrong with the interior export?
-            MeshReplacements.Add(
-                new PrefabModder.MeshReplacement(
-                    "interior",
-                    bundle.LoadAsset<GameObject>($"Assets/Models/SlicedPax/car_passenger_interior_LOD1.fbx")
-                        .GetComponent<MeshFilter>()
-                        .sharedMesh));
 
             bundle.Unload(false);
 
