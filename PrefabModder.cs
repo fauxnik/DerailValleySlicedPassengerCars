@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace SlicedPassengerCars
@@ -61,7 +62,14 @@ namespace SlicedPassengerCars
             {
                 // one of these two should exist
                 var mf = replacee.GetComponent<MeshFilter>();
-                if (mf != null) { mf.sharedMesh = meshReplacement.mesh; }
+                if (mf != null) {
+                    // if (new Regex("interior").IsMatch(meshReplacement.name))
+                    // {
+                    //     var renderer = replacee.GetComponent<Renderer>();
+                    //     Debug.Log($"{meshReplacement.name} textures are {string.Join(", ", renderer.sharedMaterials.Select(m => $"[{string.Join(", ", new string[] { m?.GetTexture("_t1")?.name, m?.GetTexture("_t3")?.name, m?.GetTexture("_t4")?.name })}]"))}");
+                    // }
+                    mf.sharedMesh = meshReplacement.mesh; 
+                }
                 var smr = replacee.GetComponent<SkinnedMeshRenderer>();
                 if (smr != null) { smr.sharedMesh = meshReplacement.mesh; }
             }
