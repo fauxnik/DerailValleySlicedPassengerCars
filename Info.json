@@ -2,7 +2,7 @@
 	"Id": "SlicedPassengerCars",
 	"DisplayName": "Sliced Passenger Cars",
 	"Author": "fauxnik",
-	"Version": "1.0.1",
+	"Version": "1.0.2",
 	"LoadAfter": ["SkinManagerMod"],
 	"AssemblyName": "SlicedPassengerCars.dll",
 	"EntryMethod": "SlicedPassengerCars.Main.OnLoad",
