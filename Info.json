@@ -3,6 +3,7 @@
 	"DisplayName": "Sliced Passenger Cars",
 	"Author": "fauxnik",
 	"Version": "1.0.1",
+	"LoadAfter": ["SkinManagerMod"],
 	"AssemblyName": "SlicedPassengerCars.dll",
 	"EntryMethod": "SlicedPassengerCars.Main.OnLoad",
 	"Repository": "https://raw.githubusercontent.com/fauxnik/DerailValleySlicedPassengerCars/master/Repository.json"
